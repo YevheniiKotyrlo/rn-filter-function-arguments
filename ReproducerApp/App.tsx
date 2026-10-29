@@ -1,44 +1,43 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+const filters = [
+  { testID: 'brightness-no-argument', filter: 'brightness()' },
+  { testID: 'brightness-one', filter: 'brightness(1)' },
+  { testID: 'brightness-px', filter: 'brightness(2px)' },
+  { testID: 'brightness-two', filter: 'brightness(2)' },
+] as const;
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
+    <ScrollView contentContainerStyle={styles.screen}>
+      {filters.map(({ testID, filter }) => (
+        <View key={testID} style={styles.row}>
+          <View testID={testID} style={[styles.box, { filter }]} />
+          <Text style={styles.label}>{filter}</Text>
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  screen: {
+    padding: 48,
+    gap: 16,
+    backgroundColor: '#ffffff',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  box: {
+    width: 96,
+    height: 96,
+    backgroundColor: '#808080',
+  },
+  label: {
+    color: '#000000',
   },
 });
 
